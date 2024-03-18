@@ -15,11 +15,11 @@ The following techniques have been used:
  - All the above said modelling techniques are tried and evaluated. The final metric used to evaluate is mean squared error.
 
 ## To excute the script
-$git clone git@github.com:Dhikshita-macherla/mle-training.git
-$cd mle-training
-$conda create -f environment.yml
-$conda create --name mle-dev
-$conda activate mle_dev
-$conda env export >environment.yml
+$git clone git@github.com:Dhikshita-macherla/mle-training.git<br>
+$cd mle-training<br>
+$conda create -f environment.yml<br>
+$conda create --name mle-dev<br>
+$conda activate mle_dev<br>
+$conda env export >environment.yml<br>
 $python nostandardcode.py
 
