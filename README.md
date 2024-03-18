@@ -16,8 +16,8 @@ The following techniques have been used:
 
 ## To excute the script
 Cloning the repository<br>
-git clone git@github.com:Dhikshita-macherla/mle-training.git  
-<br><br>
+git clone git@github.com:Dhikshita-macherla/mle-training.git<br>
+<br>
 Creating and Activating the environment<br>
 conda create --name mle-dev <br>
 conda activate mle_dev<br>
@@ -27,3 +27,5 @@ conda env export >environment.yml<br>
 <br>
 Executing the python file<br>
 python nostandardcode.py<br>
+
+# mle-training
