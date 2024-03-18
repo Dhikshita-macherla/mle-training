@@ -21,5 +21,5 @@ $conda create -f environment.yml<br>
 $conda create --name mle-dev<br>
 $conda activate mle_dev<br>
 $conda env export >environment.yml<br>
-$python nostandardcode.py
+$python nonstandardcode.py
 
