@@ -1,6 +1,6 @@
 {
     "python.defaultInterpreterPath": "/home/dhikshita/miniconda3/bin/python",
-    "editor.formatOnSave": true,
+    "editor.formatOnSave": false,
     "[python]": {
         "editor.formatOnType": true,
         "editor.codeActionsOnSave": {
