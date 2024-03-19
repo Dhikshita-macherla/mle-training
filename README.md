@@ -17,10 +17,9 @@ The following techniques have been used:
 
 ## To excute the script
 
-$git clone git@github.com:Dhikshita-macherla/mle-training.git
-$cd mle-training
-$conda create -f environment.yml
-$conda create --name mle-dev
-$conda activate mle_dev
-$conda env export >environment.yml
-$python nonstandardcode.py
+$git clone git@github.com:Dhikshita-macherla/mle-training.git<br>
+$cd mle-training<br>
+$conda create -f environment.yml<br>
+$conda create --name mle-dev<br>
+$conda activate mle_dev<br>
+$python nonstandardcode.py<br>
