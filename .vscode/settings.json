@@ -1,0 +1,13 @@
+{
+    "python.defaultInterpreterPath": "/home/dhikshita/miniconda3/bin/python",
+    "editor.formatOnSave": true,
+    "[python]": {
+        "editor.formatOnType": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        },
+    },
+    "flake8.args": [
+        "--max-line-length=120"
+    ]
+}
