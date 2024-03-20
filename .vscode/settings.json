@@ -8,8 +8,9 @@
         },
     },
     "flake8.args": [
-        "--max-line-length=120"
+        "--max-line-length=79"
     ],
+    "black-formatter.args": ["--line-length", "79"],
     "isort.args" : ["--profile", "black", "--float-to-top"
     ]
 }
