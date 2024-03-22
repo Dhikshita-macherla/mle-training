@@ -6,7 +6,9 @@ on:
       - main
   push:
     branches:
+      - main
       - enh/7/ci-setup
+
 
 jobs:
   build:
@@ -28,8 +30,8 @@ jobs:
 
       - name: Run flake8 test
         run: |
-          flake8 /home/dhikshita/mle-training/nonstandardcode.py
+          flake8 nonstandardcode.py
 
       - name: Run nonstandardcode.py
         run: |
-          python /home/dhikshita/mle-training/nonstandardcode.py
+          python nonstandardcode.py
