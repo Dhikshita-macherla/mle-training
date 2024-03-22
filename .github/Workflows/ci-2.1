@@ -1,0 +1,35 @@
+name: env
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - enh/7/ci-setup
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: mle-dev
+          environment-file:etc/env.yml
+          auto-activate-base: false
+
+      - name: Activate Conda environment
+        run: |
+          conda activate mle-dev
+
+      - name: Run flake8 test
+        run: |
+          flake8 /home/dhikshita/mle-training/nonstandardcode.py
+
+      - name: Run nonstandardcode.py
+        run: |
+          python /home/dhikshita/mle-training/nonstandardcode.py

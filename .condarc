@@ -1,0 +1,13 @@
+notify_outdated_conda: false
+changeps1: true
+channel_priority: strict
+channels:
+  - conda-forge
+  - defaults
+
+create_default_packages:
+  - PYTHON
+auto_update_conda: false
+
+restore_free_channel: true
+auto_activate_base: false
