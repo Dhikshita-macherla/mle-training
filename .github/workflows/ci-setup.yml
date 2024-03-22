@@ -27,7 +27,6 @@ jobs:
       - name: Activate Conda environment
         run: |
           conda init
-          conda activate mle-dev
 
       - name: Run flake8 test
         run: |
