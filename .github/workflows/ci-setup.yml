@@ -29,10 +29,12 @@ jobs:
           source $CONDA/etc/profile.d/conda.sh
           conda init
           conda activate mle-dev
+      - name: Install packages
+        run: |
+          python -m pip install flake8 numpy pandas scipy six scikit-learn
 
       - name: Run flake8 test
         run: |
-          sudo apt-get install -y flake8
           flake8 nonstandardcode.py
 
       - name: Run nonstandardcode.py
