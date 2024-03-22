@@ -32,6 +32,7 @@ jobs:
 
       - name: Run flake8 test
         run: |
+          sudo apt-get install -y flake8
           flake8 nonstandardcode.py
 
       - name: Run nonstandardcode.py
