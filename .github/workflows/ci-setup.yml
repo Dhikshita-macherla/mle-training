@@ -26,7 +26,9 @@ jobs:
 
       - name: Activate Conda environment
         run: |
+          source $CONDA/etc/profile.d/conda.s
           conda init
+          conda activate mle-dev
 
       - name: Run flake8 test
         run: |
