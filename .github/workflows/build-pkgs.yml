@@ -40,7 +40,7 @@ jobs:
 
       - name: Tree before build
         run: |
-          python -m tree mle-training
+          tree
 
       - name: Build Package
         run: |
@@ -48,4 +48,4 @@ jobs:
 
       - name: Tree after build
         run: |
-          python -m tree mle-training
+          tree
