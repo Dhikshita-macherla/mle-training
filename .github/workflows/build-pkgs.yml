@@ -40,6 +40,8 @@ jobs:
 
       - name: Build Package
         run: |
+          pip install --upgrade setuptools
+          pip install --upgrade build
           python -m build
 
       - name: Tree after build
@@ -49,9 +51,10 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build_arti
-          path: dist
+          path: dist/
 
   Install_deploy:
+    needs: Building_pkgs
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -70,7 +73,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: my-artifact
-          path: dist
+          path: dist/
 
       - name: Download artifact
         uses: actions/download-artifact@v4
