@@ -13,6 +13,9 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -24,16 +27,14 @@ jobs:
           environment-file: etc/env.yml
           auto-activate-base: false
 
-      - name: Activate Conda environment
-        run: |
-          source $CONDA/etc/profile.d/conda.sh
-          conda init
-          conda activate mle-dev
+      - run: |
+          conda info
+          conda list
 
       - name: Run flake8 test
         run: |
-          conda run -n mle-dev flake8 nonstandardcode.py
+          python -m flake8 nonstandardcode.py
 
       - name: Run nonstandardcode.py
         run: |
-          conda run -n mle-dev python nonstandardcode.py
+          python -m nonstandardcode.py
