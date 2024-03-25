@@ -29,7 +29,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: my-artifact
-          path: /home/dhikshita/mle-training/dist
+          path: dist
       - run: |
           conda info
           conda list
@@ -40,7 +40,7 @@ jobs:
 
       - name: Tree before build
         run: |
-          tree /home/dhikshita/mle-training
+          tree root
 
       - name: Build Package
         run: |
@@ -48,4 +48,4 @@ jobs:
 
       - name: Tree after build
         run: |
-          tree /home/dhikshita/mle-training
+          tree root
