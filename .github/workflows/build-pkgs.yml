@@ -40,7 +40,7 @@ jobs:
 
       - name: Tree before build
         run: |
-          tree mle-training
+          tree /mle-training
 
       - name: Build Package
         run: |
