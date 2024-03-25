@@ -69,11 +69,6 @@ jobs:
           activate-environment: mle-dev
           environment-file: etc/env.yml
           auto-activate-base: false
-      - name: Upload artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: my-artifact
-          path: dist/
 
       - name: Download artifact
         uses: actions/download-artifact@v4
