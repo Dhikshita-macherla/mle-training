@@ -48,7 +48,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: my-artifact
+          name: build_arti
           path: dist
 
   Install_deploy:
@@ -75,7 +75,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: download_arti
+          name: build_arti
 
       - name: Install Package
         run: |
