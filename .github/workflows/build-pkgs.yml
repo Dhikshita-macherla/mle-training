@@ -1,0 +1,51 @@
+name: build-pkgs
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - enh/9/pypackaging
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash -el {0}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up Miniconda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: mle-dev
+          environment-file: etc/env.yml
+          auto-activate-base: false
+      -name: Upload artifact
+        - uses: actions/upload-artifact@v4
+          with:
+            name: my-artifact
+            path: /home/dhikshita/mle-training/dist
+      - run: |
+          conda info
+          conda list
+
+      - name: Install Tree Cli
+        run: |
+          sudo apt install tree
+
+      - name: Tree before build
+        run: |
+          tree mle-training
+
+      - name: Build Package
+        run: |
+          python -m build
+
+      - name: Tree after build
+        run: |
+          tree mle-training
