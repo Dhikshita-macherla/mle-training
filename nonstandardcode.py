@@ -1,9 +1,6 @@
-import data_ingestion
-import data_training
-import numpy as np
-import pandas as pd
-import scoring_logic
 from scipy.stats import randint
+
+from housePricePrediction import data_ingestion, data_training, scoring_logic
 
 data_ingestion.fetch_housing_data()
 housing = data_ingestion.load_housing_data()
