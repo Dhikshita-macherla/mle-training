@@ -6,7 +6,7 @@ on:
       - main
   push:
     branches:
-      - enh/11/pytest
+      - enh/11/testing-pytest
 
 jobs:
   Testing_python_code:
