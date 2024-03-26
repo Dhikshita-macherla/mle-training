@@ -1,5 +1,8 @@
 name: env
-
+on:
+  pull_request:
+    branches:
+      - branch_name
 
 jobs:
   build:
