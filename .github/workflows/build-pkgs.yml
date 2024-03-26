@@ -3,7 +3,7 @@ name: build-pkgs
 on:
   pull_request:
     branches:
-      - main
+      - branch_name
 
 jobs:
   Building_pkgs:
@@ -19,7 +19,7 @@ jobs:
         uses: conda-incubator/setup-miniconda@v2
         with:
           activate-environment: mle-dev
-          environment-file: etc/env.yml
+          environment-file: deploy/conda/env.yml
           auto-activate-base: false
 
       - run: |
