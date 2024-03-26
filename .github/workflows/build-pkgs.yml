@@ -81,4 +81,4 @@ jobs:
 
       - name: Run nonstandardcode.py
         run: |
-          python -m mypackage.nonstandardcode
+          python -m housePricePrediction.nonstandardcode

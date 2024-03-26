@@ -2,5 +2,5 @@
 requires = ["setuptools"]
 build-backend = "setuptools.build_meta"
 [project]
-name = "mypackage"
+name = "housePricePrediction"
 version = "0.0.1"

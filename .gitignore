@@ -1,5 +1,5 @@
 # ignore all logs
 *.pyc
 *.csv
-# *.tgz
+*.tgz
 # *.whl
