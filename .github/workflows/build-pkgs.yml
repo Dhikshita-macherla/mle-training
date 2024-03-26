@@ -3,7 +3,7 @@ name: build-pkgs
 on:
   pull_request:
     branches:
-      - main
+      - branch_name
 
 jobs:
   Building_pkgs:
