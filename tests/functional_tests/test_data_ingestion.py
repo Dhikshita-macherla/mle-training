@@ -1,6 +1,6 @@
-def test_pkg_import():
+def test_data_ingestion_import():
     try:
-        import housePricePrediction
+        from housePricePrediction import data_ingestion
     except Exception as e:
         assert False, (
             f"Error: { e.__str__() }. "

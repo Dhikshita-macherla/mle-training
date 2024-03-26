@@ -1,6 +1,6 @@
 def test_pkg_import():
     try:
-        import housePricePrediction
+        import housePricePrediction.scoring_logic
     except Exception as e:
         assert False, (
             f"Error: { e.__str__() }. "
