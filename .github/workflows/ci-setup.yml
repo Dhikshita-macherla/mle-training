@@ -1,14 +1,8 @@
 name: env
-
 on:
   pull_request:
     branches:
-      - main
-  push:
-    branches:
-      - main
-      - enh/7/ci-setup
-
+      - branch_name
 
 jobs:
   build:
