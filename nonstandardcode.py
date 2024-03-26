@@ -23,15 +23,22 @@ housing, housing_labels, housing_prepared, imputer= data_ingestion.feature_extra
 
 housing_predictions = data_training.regression('lin', housing_prepared, housing_labels)
 lin_rmse, lin_mae = scoring_logic.scoring_logic(housing_labels, housing_predictions)
-print(lin_rmse,"   ", lin_mae)
 
 housing_predictions = data_training.regression('tree', housing_prepared, housing_labels)
 tree_rmse, tree_mae = scoring_logic.scoring_logic(housing_labels, housing_predictions)
-print(tree_rmse,"  ", tree_mae)
 
-
-rnd_search, cvres, housing_prepared = data_training.cross_validation('RandomizedSearchCV', housing_prepared, housing_labels)
-grid_search, cvres, housing_prepared = data_training.cross_validation('GridSearchCV', housing_prepared, housing_labels)
+param_distribs = {
+    "n_estimators": randint(low=1, high=200),
+    "max_features": randint(low=1, high=8),
+}
+param_grid = [
+    # try 12 (3×4) combinations of hyperparameters
+    {"n_estimators": [3, 10, 30], "max_features": [2, 4, 6, 8]},
+    # then try 6 (2×3) combinations with bootstrap set as False
+    {"bootstrap": [False], "n_estimators": [3, 10], "max_features": [2, 3, 4]},
+    ]
+rnd_search, cvres, housing_prepared = data_training.cross_validation('RandomizedSearchCV', housing_prepared, housing_labels, param_distribs, param_grid)
+grid_search, cvres, housing_prepared = data_training.cross_validation('GridSearchCV', housing_prepared, housing_labels, param_distribs, param_grid)
 
 feature_importances = grid_search.best_estimator_.feature_importances_
 sorted(zip(feature_importances, housing_prepared.columns), reverse=True)
