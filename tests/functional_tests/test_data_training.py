@@ -1,9 +1,9 @@
 def test_pkg_import():
     try:
-        import housePricePrediction.data_training
+        from housePricePrediction import data_training
     except Exception as e:
         assert False, (
             f"Error: { e.__str__() }. "
-            " housePricePrediction package is not \
+            " data_training package is not \
                 imported and installed correctly."
         )

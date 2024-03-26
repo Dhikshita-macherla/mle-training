@@ -4,6 +4,6 @@ def test_data_ingestion_import():
     except Exception as e:
         assert False, (
             f"Error: { e.__str__() }. "
-            " housePricePrediction package is not \
+            " data_ingestion package is not \
                 imported and installed correctly."
         )
