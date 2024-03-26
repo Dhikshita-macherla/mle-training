@@ -1,6 +1,6 @@
 def test_pkg_import():
     try:
-        import mypackage
+        import housePricePrediction
     except Exception as e:
         assert False, (
             f"Error: {e}. "
