@@ -50,6 +50,3 @@ jobs:
       - name: Test using Pytest
         run: |
           pytest
-      - name: Run nonstd
-        run: |
-          python nonstandardcode.py
