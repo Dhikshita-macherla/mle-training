@@ -16,8 +16,8 @@ housing = strat_train_set.copy()
 housing.plot(kind="scatter", x="longitude", y="latitude")
 housing.plot(kind="scatter", x="longitude", y="latitude", alpha=0.1)
 
-# corr_matrix = housing.corr()
-# corr_matrix["median_house_value"].sort_values(ascending=False)
+corr_matrix = housing.corr(numeric_only=True)
+corr_matrix["median_house_value"].sort_values(ascending=False)
 
 housing, housing_labels, housing_prepared, imputer= data_ingestion.feature_extraction(housing, strat_train_set)
 
