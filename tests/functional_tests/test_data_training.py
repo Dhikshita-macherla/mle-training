@@ -1,4 +1,4 @@
-def test_pkg_import():
+def test_data_training():
     try:
         from housePricePrediction import data_training
     except Exception as e:

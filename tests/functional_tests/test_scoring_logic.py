@@ -1,4 +1,4 @@
-def test_pkg_import():
+def test_scoring_logic():
     try:
         from housePricePrediction import scoring_logic
     except Exception as e:
