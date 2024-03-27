@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+from scipy.stats import randint
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.linear_model import LinearRegression
 from sklearn.model_selection import (
@@ -23,18 +24,28 @@ def stratifiedShuffleSplit(housing):
     return train_set, test_set, strat_train_set, strat_test_set
 
 
-def regression(model, housing_prepared, housing_labels):
+def train_data_regression(model, X, y):
     if model == 'lin':
         reg = LinearRegression()
     elif model == 'tree':
         reg = DecisionTreeRegressor()
-    reg.fit(housing_prepared, housing_labels)
-    housing_predictions = reg.predict(housing_prepared)
-    return housing_predictions
+    reg.fit(X, y)
+    pred = reg.predict(X)
+    return pred
 
 
-def cross_validation(model, housing_prepared, housing_labels, param_distribs, param_grid):
+def cross_validation(model, X, y):
     forest_reg = RandomForestRegressor(random_state=42)
+    param_distribs = {
+        "n_estimators": randint(low=1, high=200),
+        "max_features": randint(low=1, high=8),
+    }
+    param_grid = [
+        # try 12 (3×4) combinations of hyperparameters
+        {"n_estimators": [3, 10, 30], "max_features": [2, 4, 6, 8]},
+        # then try 6 (2×3) combinations with bootstrap set as False
+        {"bootstrap": [False], "n_estimators": [3, 10], "max_features": [2, 3, 4]},
+        ]
     if model == 'RandomizedSearchCV':
         search = RandomizedSearchCV(
             forest_reg,
@@ -52,41 +63,15 @@ def cross_validation(model, housing_prepared, housing_labels, param_distribs, pa
             scoring="neg_mean_squared_error",
             return_train_score=True,
         )
-    search.fit(housing_prepared, housing_labels)
+    search.fit(X, y)
     cvres = search.cv_results_
     for mean_score, params in zip(cvres["mean_test_score"], cvres["params"]):
         print(np.sqrt(-mean_score), params)
-    return search, cvres, housing_prepared
+    return search, cvres, X
 
 
-def predict_Best_Estimator(grid_search, strat_test_set, housing_prepared, imputer):
+def predict_Best_Estimator(grid_search, X):
     feature_importances = grid_search.best_estimator_.feature_importances_
-    sorted(zip(feature_importances, housing_prepared.columns), reverse=True)
+    sorted(zip(feature_importances, X.columns), reverse=True)
     final_model = grid_search.best_estimator_
-
-    X_test = strat_test_set.drop("median_house_value", axis=1)
-    y_test = strat_test_set["median_house_value"].copy()
-
-    X_test_num = X_test.drop("ocean_proximity", axis=1)
-    X_test_prepared = imputer.transform(X_test_num)
-    X_test_prepared = pd.DataFrame(
-        X_test_prepared, columns=X_test_num.columns, index=X_test.index
-    )
-    X_test_prepared["rooms_per_household"] = (
-        X_test_prepared["total_rooms"] / X_test_prepared["households"]
-    )
-    X_test_prepared["bedrooms_per_room"] = (
-        X_test_prepared["total_bedrooms"] / X_test_prepared["total_rooms"]
-    )
-    X_test_prepared["population_per_household"] = (
-        X_test_prepared["population"] / X_test_prepared["households"]
-    )
-
-    X_test_cat = X_test[["ocean_proximity"]]
-
-    X_test_prepared = X_test_prepared.join(
-        pd.get_dummies(X_test_cat, drop_first=True)
-    )
-
-    final_predictions = final_model.predict(X_test_prepared)
-    return y_test, final_predictions
+    return final_model

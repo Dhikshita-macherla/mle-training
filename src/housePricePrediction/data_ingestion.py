@@ -1,6 +1,7 @@
 import os
 import tarfile
 
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from six.moves import urllib
@@ -34,12 +35,12 @@ def load_housing_data(housing_path=HOUSING_PATH):
 def income_cat_proportions(data):
     return data["income_cat"].value_counts() / len(data)
 
-def preprocessing(housing, strat_test_set, test_set):
+def preprocessing(housing, X_strat, y_strat, y):
     compare_props = pd.DataFrame(
     {
         "Overall": income_cat_proportions(housing),
-        "Stratified": income_cat_proportions(strat_test_set),
-        "Random": income_cat_proportions(test_set),
+        "Stratified": income_cat_proportions(y_strat),
+        "Random": income_cat_proportions(y),
     }
     ).sort_index()
     compare_props["Rand. %error"] = (
@@ -49,9 +50,19 @@ def preprocessing(housing, strat_test_set, test_set):
     compare_props["Strat. %error"] = (
         100 * compare_props["Stratified"] / compare_props["Overall"] - 100
     )
-    return compare_props
+    for set_ in (X_strat, y_strat):
+        set_.drop("income_cat", axis=1, inplace=True)
 
-def feature_extraction(housing, strat_train_set):
+    return compare_props
+def data_visualization(housing):
+    housing.plot(kind="scatter", x="longitude", y="latitude")
+    housing.plot(kind="scatter", x="longitude", y="latitude", alpha=0.1)
+    plt.show()
+    corr_matrix = housing.corr(numeric_only=True)
+    corr_matrix["median_house_value"].sort_values(ascending=False)
+    print(corr_matrix)
+
+def feature_extraction(housing):
     housing["rooms_per_household"] = housing["total_rooms"] / housing["households"]
     housing["bedrooms_per_room"] = (
         housing["total_bedrooms"] / housing["total_rooms"]
@@ -59,33 +70,24 @@ def feature_extraction(housing, strat_train_set):
     housing["population_per_household"] = (
         housing["population"] / housing["households"]
     )
+    return housing
 
-    housing = strat_train_set.drop("median_house_value", axis=1)
-    # drop labels for training set
-
-    housing_labels = strat_train_set["median_house_value"].copy()
+def imputing_data(X_train):
+    housing = X_train.drop("median_house_value", axis=1)
+    y = X_train["median_house_value"].copy()
 
     imputer = SimpleImputer(strategy="median")
-    housing_num = housing.drop("ocean_proximity", axis=1)
-    imputer.fit(housing_num)
-    X = imputer.transform(housing_num)
+    X_num = housing.drop("ocean_proximity", axis=1)
+    imputer.fit(X_num)
+    X = imputer.transform(X_num)
 
-    housing_tr = pd.DataFrame(X, columns=housing_num.columns, index=housing.index)
+    X_prepared = pd.DataFrame(X, columns=X_num.columns, index=housing.index)
+    return housing, y, X_prepared
 
-    housing_tr["rooms_per_household"] = (
-        housing_tr["total_rooms"] / housing_tr["households"]
+def creating_dummies(housing, X_prepared):
+    X_cat = housing[["ocean_proximity"]]
+
+    X_prepared = X_prepared.join(
+        pd.get_dummies(X_cat, drop_first=True)
     )
-
-    housing_tr["bedrooms_per_room"] = (
-        housing_tr["total_bedrooms"] / housing_tr["total_rooms"]
-    )
-    housing_tr["population_per_household"] = (
-        housing_tr["population"] / housing_tr["households"]
-    )
-
-    housing_cat = housing[["ocean_proximity"]]
-
-    housing_prepared = housing_tr.join(
-        pd.get_dummies(housing_cat, drop_first=True)
-    )
-    return housing, housing_labels, housing_prepared, imputer
+    return X_prepared
