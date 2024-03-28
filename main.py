@@ -54,11 +54,16 @@ housing_predictions_reg = data_training.train_data_regression(
 tree_rmse_train, tree_mae_train = scoring_logic.scoring_logic(
     housing_y_train, housing_predictions_reg
 )
+final_model_train_random = data_training.cross_validation('RandomizedSearchCV',
+                                                          housing_X_train,
+                                                          housing_y_train)
+print("Best Estimator", final_model_train_random)
+final_model_train_grid = data_training.cross_validation('GridSearchCV',
+                                                        housing_X_train,
+                                                        housing_y_train)
+print("Best Estimator", final_model_train_grid)
 
-final_model_train = data_training.cross_validation(housing_X_train, housing_y_train)
-print("Best Estimator", final_model_train)
-
-final_predictions_train = final_model_train.predict(housing_X_train)
+final_predictions_train = final_model_train_grid.predict(housing_X_train)
 final_rmse_train, final_mae_train = scoring_logic.scoring_logic(
     housing_y_train, final_predictions_train
 )
@@ -67,7 +72,7 @@ print("Scoring for train-data: \n", final_rmse_train, "   ", final_mae_train)
 
 
 # test using trained models
-final_predictions_test = final_model_train.predict(housing_X_test)
+final_predictions_test = final_model_train_grid.predict(housing_X_test)
 final_rmse_test, final_mae_test = scoring_logic.scoring_logic(
     housing_y_test, final_predictions_test
 )
