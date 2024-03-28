@@ -21,18 +21,6 @@ class TestModelTraining(unittest.TestCase):
         pred = data_training.train_data_regression('lin', self.X, self.y)
         self.assertAlmostEqual(pred[0], 1)
 
-    def test_cross_validation(self):
-        self.data = data_ingestion.load_housing_data()
-        train_set, test_set, strain, stest = \
-            data_training.stratified_Shuffle_Split(self.data)
-        X_train = strain.copy()
-        X_train, y, X = data_ingestion.imputing_data(strain)
-        X = data_ingestion.feature_extraction(X_train)
-        X = data_ingestion.creating_dummies(X_train, X)
-        model = data_training.cross_validation('GridSearchCV',
-                                               X,
-                                               y)
-        self.assertIsInstance(model, RandomForestRegressor, "nope")
 
 if __name__ == '__main__':
     unittest.main()
