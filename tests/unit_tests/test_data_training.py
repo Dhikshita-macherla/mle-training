@@ -27,13 +27,12 @@ class TestModelTraining(unittest.TestCase):
             data_training.stratified_Shuffle_Split(self.data)
         X_train = strain.copy()
         X_train, y, X = data_ingestion.imputing_data(strain)
-        X_train = data_ingestion.feature_extraction(X_train)
-        X_train, X, y = data_ingestion.creating_dummies(X_train, X)
+        X = data_ingestion.feature_extraction(X_train)
+        X = data_ingestion.creating_dummies(X_train, X)
         model = data_training.cross_validation('GridSearchCV',
                                                X,
                                                y)
         self.assertIsInstance(model, RandomForestRegressor, "nope")
-
 
 if __name__ == '__main__':
     unittest.main()
