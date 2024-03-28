@@ -2,6 +2,7 @@ import unittest
 
 import numpy as np
 import pandas as pd
+from sklearn.ensemble import RandomForestRegressor
 
 from housePricePrediction import data_ingestion, data_training
 
@@ -22,7 +23,12 @@ class TestModelTraining(unittest.TestCase):
         self.assertEqual(train_set.shape[0], 16512)
         self.assertEqual(test_set.shape[0], 4128)
 
-
+    def test_cross_validation(self):
+        self.data = data_ingestion.load_housing_data()
+        train_set, test_set, strain, stest = \
+            data_training.stratified_Shuffle_Split(self.data)
+        model= data_training.cross_validation('GridSearchCV', train_set, test_set)
+        self.assertIsInstance(model, RandomForestRegressor, "nope")
 
 
 if __name__ == '__main__':
