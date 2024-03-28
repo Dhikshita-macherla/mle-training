@@ -1,9 +1,12 @@
-name: refactor-python code
+name: testing-python code (unit test)
 
 on:
   pull_request:
     branches:
-      - branch_name
+      - main
+  push:
+    branches:
+      - test/15/unittest
 
 jobs:
   Refactoring_python_code:
@@ -32,17 +35,13 @@ jobs:
 
       - name: Build Package
         run: |
-          pip install --upgrade setuptools
-          pip install --upgrade build
-          pip install -U pytest
-          python -m build
+           pip install -e
+           pip install -U pytest
+
 
       - name: Tree after build
         run: |
           tree
-      - name: Install Package
-        run: |
-          pip install dist/*.whl
       - name: Test using Pytest
         run: |
           pytest
