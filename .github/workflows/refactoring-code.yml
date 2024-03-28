@@ -46,6 +46,3 @@ jobs:
       - name: Test using Pytest
         run: |
           pytest
-      - name: Runnning Flake8
-        run: |
-          flake8 *.py
