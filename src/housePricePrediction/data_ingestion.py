@@ -23,7 +23,7 @@ def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
 
 def load_housing_data(housing_path=HOUSING_PATH):
     csv_path = os.path.join(housing_path, "housing.csv")
-    housing= pd.read_csv(csv_path)
+    housing = pd.read_csv(csv_path)
     housing["income_cat"] = pd.cut(
         housing["median_income"],
         bins=[0.0, 1.5, 3.0, 4.5, 6.0, np.inf],
@@ -35,13 +35,14 @@ def load_housing_data(housing_path=HOUSING_PATH):
 def income_cat_proportions(data):
     return data["income_cat"].value_counts() / len(data)
 
+
 def preprocessing(housing, X_strat, y_strat, y):
     compare_props = pd.DataFrame(
-    {
-        "Overall": income_cat_proportions(housing),
-        "Stratified": income_cat_proportions(y_strat),
-        "Random": income_cat_proportions(y),
-    }
+        {
+            "Overall": income_cat_proportions(housing),
+            "Stratified": income_cat_proportions(y_strat),
+            "Random": income_cat_proportions(y),
+        }
     ).sort_index()
     compare_props["Rand. %error"] = (
         100 * compare_props["Random"] / compare_props["Overall"] - 100
@@ -54,6 +55,8 @@ def preprocessing(housing, X_strat, y_strat, y):
         set_.drop("income_cat", axis=1, inplace=True)
 
     return compare_props
+
+
 def data_visualization(housing):
     housing.plot(kind="scatter", x="longitude", y="latitude")
     housing.plot(kind="scatter", x="longitude", y="latitude", alpha=0.1)
@@ -62,15 +65,13 @@ def data_visualization(housing):
     corr_matrix["median_house_value"].sort_values(ascending=False)
     print(corr_matrix)
 
+
 def feature_extraction(housing):
     housing["rooms_per_household"] = housing["total_rooms"] / housing["households"]
-    housing["bedrooms_per_room"] = (
-        housing["total_bedrooms"] / housing["total_rooms"]
-    )
-    housing["population_per_household"] = (
-        housing["population"] / housing["households"]
-    )
+    housing["bedrooms_per_room"] = housing["total_bedrooms"] / housing["total_rooms"]
+    housing["population_per_household"] = housing["population"] / housing["households"]
     return housing
+
 
 def imputing_data(X_train):
     housing = X_train.drop("median_house_value", axis=1)
@@ -84,10 +85,9 @@ def imputing_data(X_train):
     X_prepared = pd.DataFrame(X, columns=X_num.columns, index=housing.index)
     return housing, y, X_prepared
 
+
 def creating_dummies(housing, X_prepared):
     X_cat = housing[["ocean_proximity"]]
 
-    X_prepared = X_prepared.join(
-        pd.get_dummies(X_cat, drop_first=True)
-    )
+    X_prepared = X_prepared.join(pd.get_dummies(X_cat, drop_first=True))
     return X_prepared
