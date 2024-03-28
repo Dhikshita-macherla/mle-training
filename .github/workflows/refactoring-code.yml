@@ -1,13 +1,12 @@
-name: testing-python code
+name: refactor-python code
 
 on:
   pull_request:
     branches:
-      - branch_name
-
+      - main
 
 jobs:
-  Testing_python_code:
+  Refactoring_python_code:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -46,4 +45,4 @@ jobs:
           pip install dist/*.whl
       - name: Test using Pytest
         run: |
-          pytest tests/functional_tests/test_installation.py
+          pytest
