@@ -9,7 +9,7 @@ on:
       - test/15/unittest
 
 jobs:
-  Refactoring_python_code:
+  unittest_python_code:
     runs-on: ubuntu-latest
     defaults:
       run:
