@@ -42,7 +42,4 @@ jobs:
         run: |
           pytest
 
-      - name: Test using unit test
-        run: |
-          python -m unittest
 
