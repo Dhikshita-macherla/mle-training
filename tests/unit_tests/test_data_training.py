@@ -25,9 +25,10 @@ class TestModelTraining(unittest.TestCase):
         self.data = data_ingestion.load_housing_data()
         train_set, test_set, strain, stest = \
             data_training.stratified_Shuffle_Split(self.data)
-        self.data, y, X = data_ingestion.imputing_data(strain)
-        self.data = data_ingestion.feature_extraction(self.data)
-        self.data, X, y = data_ingestion.creating_dummies(self.data, X)
+        X_train = strain.copy()
+        X_train, y, X = data_ingestion.imputing_data(strain)
+        X_train = data_ingestion.feature_extraction(X_train)
+        X_train, X, y = data_ingestion.creating_dummies(X_train, X)
         model = data_training.cross_validation('GridSearchCV',
                                                X,
                                                y)
