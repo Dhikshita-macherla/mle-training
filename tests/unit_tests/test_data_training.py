@@ -8,10 +8,10 @@ from housePricePrediction import data_training
 
 class TestModelTraining(unittest.TestCase):
     def test_stratifiedShuffleSplit(self):
-        self.data(pd.DataFrame({
+        self.data = pd.DataFrame({
             'income_cat': [1, 2, 3, 4, 3, 1],
             'total_rooms': [50, 100, 60, 70, 200, 150],
-            'households': [60, 10, 20, 40, 50, 35]}))
+            'households': [60, 10, 20, 40, 50, 35]})
         train_set, test_set, _, _ = \
             data_training.stratifiedShuffleSplit(self.data)
         self.assertEqual(train_set.shape[0], 4)
