@@ -11,7 +11,7 @@ from sklearn.model_selection import (
 from sklearn.tree import DecisionTreeRegressor
 
 
-def stratifiedShuffleSplit(housing):
+def stratified_Shuffle_Split(housing):
     train_set, test_set = train_test_split(housing,
                                            test_size=0.2,
                                            random_state=42)
