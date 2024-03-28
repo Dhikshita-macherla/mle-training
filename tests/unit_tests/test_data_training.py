@@ -19,7 +19,8 @@ class TestModelTraining(unittest.TestCase):
         train_set, test_set, strain, stest = \
             data_training.stratified_Shuffle_Split(self.data)
         self.assertGreaterEqual(len(set(strain)), 1)
-        self.assertEqual(test_set.shape[0], 2)
+        self.assertEqual(train_set.shape[0], 16512)
+        self.assertEqual(test_set.shape[0], 4128)
 
 
 
