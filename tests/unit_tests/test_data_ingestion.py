@@ -37,7 +37,8 @@ class TestDataIngestion(unittest.TestCase):
                                                          'NEAR OCEAN']})
         data, _, X_prepared = data_ingestion.imputing_data(self.housing)
         self.assertEqual(X_prepared.shape, (3, 4))
-        self.assertListEqual(list(X_prepared['total_rooms']), [50.0, 125.0, 200.0])
+        self.assertListEqual(list(X_prepared['total_rooms']),
+                             [50.0, 125.0, 200.0])
 
 
 if __name__ == '__main__':
