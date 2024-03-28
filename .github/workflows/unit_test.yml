@@ -33,15 +33,11 @@ jobs:
         run: |
           tree
 
-      - name: Build Package
+      - name: Install Package in dev mode
         run: |
            pip install -e .
            pip install -U pytest
 
-
-      - name: Tree after build
-        run: |
-          tree
       - name: Test using Pytest
         run: |
           pytest
