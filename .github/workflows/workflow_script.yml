@@ -102,7 +102,7 @@ jobs:
 
       - name: Install Package
         run: |
-          pip install dist/*.whl
+          pip install *.whl
 
       - name: Run nonstandardcode.py
         run: |
