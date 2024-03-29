@@ -104,9 +104,15 @@ jobs:
         run: |
           pip install *.whl
 
-      - name: Run nonstandardcode.py
+      - name: Run scripts
         run: |
-          python ingestion.py data
+          python scripts/ingestion.py data
+          python scripts/ingestion.py data -h
+          python scripts/train.py data
+          python scripts/train.py data/processed .artifacts -h
+          python scripts/score.py data/processed .artifacts/models .artifacts/scores
+          python scripts/score.py data/processed .artifacts/models .artifacts/scores -h
+
 
 
 
