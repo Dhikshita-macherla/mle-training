@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - test/15/unittest
 
 jobs:
   unittest_python_code:
@@ -40,6 +37,6 @@ jobs:
 
       - name: Test using Pytest
         run: |
-          pytest
+          pytest -v
 
 
