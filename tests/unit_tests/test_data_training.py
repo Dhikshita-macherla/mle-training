@@ -28,7 +28,7 @@ class TestModelTraining(unittest.TestCase):
     def test_train_data_regression(self):
         self.X = np.array([[1], [2], [3]])
         self.y = np.array([1, 2, 3])
-        pred = data_training.train_data_regression('lin', self.X, self.y)
+        pred, _ = data_training.train_data_regression('lin', self.X, self.y)
         self.assertAlmostEqual(pred[0], 1)
 
 
