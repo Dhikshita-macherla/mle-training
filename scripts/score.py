@@ -29,7 +29,8 @@ def scoring(data_folder, pred_folder, op_folder):
 
 parser = argparse.ArgumentParser()
 parser.add_argument("data", help="Add path to ip folder(datasets)")
-parser.add_argument("pred", help="Add path to op folder(pickle files)")
-parser.add_argument("op_file", help="Add path to op folder(pickle files)")
+parser.add_argument("pred",
+                    help="Add path to trained models folder(pickle files)")
+parser.add_argument("op_file", help="Add path to op folder")
 args = parser.parse_args()
 scoring(args.data, args.pred, args.op_file)

@@ -30,7 +30,8 @@ housing_train, housing_y_train, housing_X_train = data_ingestion.imputing_data(
     strat_train_set
 )
 housing_X_train = data_ingestion.feature_extraction(housing_X_train)
-housing_X_train = data_ingestion.creating_dummies(housing_train, housing_X_train)
+housing_X_train = data_ingestion.creating_dummies(housing_train,
+                                                  housing_X_train)
 # Feature Extraction for test set
 housing_test, housing_y_test, housing_X_test = data_ingestion.imputing_data(
     strat_test_set

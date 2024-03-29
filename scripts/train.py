@@ -10,8 +10,8 @@ from housePricePrediction import data_training
 def training(ip_path, op_path):
     housing_X = pd.read_csv(ip_path+'/X_train.csv')
     housing_y = pd.read_csv(ip_path+'/y_train.csv').values.ravel()
-    os.makedirs(op_path, exist_ok=True)
 
+    os.makedirs(op_path, exist_ok=True)
     print("Training the model")
     _, lin_model = data_training.train_data_regression("lin", housing_X,
                                                        housing_y)

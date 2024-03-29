@@ -109,7 +109,7 @@ jobs:
           python scripts/ingestion.py -h
           python scripts/ingestion.py data
           python scripts/train.py -h
-          python scripts/train.py data/processed .artifacts
+          python scripts/train.py data/processed .artifacts/models
           python scripts/score.py -h
           python scripts/score.py data/processed .artifacts/models .artifacts/scores
 

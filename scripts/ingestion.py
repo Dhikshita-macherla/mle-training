@@ -9,7 +9,8 @@ def ingestion(output_folder):
     # fetch
     raw_data_path = output_folder+'/raw'
     os.makedirs(raw_data_path, exist_ok=True)
-    DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
+    DOWNLOAD_ROOT = (
+        "https://raw.githubusercontent.com/ageron/handson-ml/master/")
     HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
     data_ingestion.fetch_housing_data(HOUSING_URL, raw_data_path)
     print("Data Downloaded n Extracted Successfully")
@@ -31,7 +32,7 @@ def ingestion(output_folder):
     print("Preprocessing done Successfully")
 
     # saving op
-    processed_data_path = output_folder+ '/processed'
+    processed_data_path = output_folder + '/processed'
     os.makedirs(processed_data_path, exist_ok=True)
     X_train = X_train.to_csv(processed_data_path + '/X_train.csv', index=False)
     y_train = y_train.to_csv(processed_data_path + '/y_train.csv', index=False)
