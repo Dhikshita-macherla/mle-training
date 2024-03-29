@@ -30,7 +30,7 @@ def train_data_regression(model, X, y):
         reg = DecisionTreeRegressor()
     reg.fit(X, y)
     pred = reg.predict(X)
-    return pred
+    return pred, reg
 
 
 def cross_validation(model, X, y):
