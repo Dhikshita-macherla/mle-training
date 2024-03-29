@@ -64,6 +64,10 @@ jobs:
           python -m build
           pip install -U pytest
 
+      - name: Install Package
+        run: |
+          pip install *.whl
+
       - name: Test using Pytest
         run: |
           pytest tests/functional_tests/
