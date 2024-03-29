@@ -18,7 +18,8 @@ class TestModelTraining(unittest.TestCase):
             'households': [126, 1138, 177, 219, 259],
             'median_income': [8.3252, 8.3014, 7.2574, 5.6431, 3.8462],
             'ocean_proximity': ['NEAR BAY',
-                                'NEAR BAY', 'NEAR BAY', 'NEAR BAY', 'NEAR BAY']
+                                'NEAR BAY', 'NEAR BAY', 'NEAR BAY', 'NEAR BAY'],
+            'income_cat': [1, 2, 4, 5, 2]
             }
 
         self.data = pd.DataFrame(self.data)
