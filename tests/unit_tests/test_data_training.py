@@ -22,8 +22,8 @@ class TestModelTraining(unittest.TestCase):
         train_set, test_set, strain, stest = \
             data_training.stratified_Shuffle_Split(self.data)
         self.assertGreaterEqual(len(set(strain)), 1)
-        self.assertEqual(train_set.shape[0], 16512)
-        self.assertEqual(test_set.shape[0], 4128)
+        self.assertEqual(train_set.shape[0], 800)
+        self.assertEqual(test_set.shape[0], 200)
 
     def test_train_data_regression(self):
         self.X = np.array([[1], [2], [3]])
