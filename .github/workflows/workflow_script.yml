@@ -99,10 +99,11 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: pytest_arti
+          path: dist/
 
       - name: Install Package
         run: |
-          pip install *.whl
+          pip install dist/*.whl
 
       - name: Run scripts
         run: |
