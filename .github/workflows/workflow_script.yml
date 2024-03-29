@@ -6,7 +6,7 @@ on:
       - main
   push:
     branches:
-      - sample
+      - enh/17/workflow-scripts
 
 jobs:
   unittest_python_code:
