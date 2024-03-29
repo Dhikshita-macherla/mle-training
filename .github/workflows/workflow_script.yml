@@ -1,4 +1,4 @@
-name: testing-python code (unit test)
+name: Workflow_scripts
 
 on:
   pull_request:
@@ -70,11 +70,11 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: build_arti
+          name: pytest_arti
           path: dist/
 
-  Install_deploy:
-    needs: Building_pkgs
+  deploy_job:
+    needs: Building_job
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -93,7 +93,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v4
         with:
-          name: build_arti
+          name: pytest_arti
 
       - name: Install Package
         run: |
@@ -101,6 +101,7 @@ jobs:
 
       - name: Run nonstandardcode.py
         run: |
-          python -m housePricePrediction.nonstandardcode
+          python ingestion.py data
+
 
 
