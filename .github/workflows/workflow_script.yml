@@ -62,6 +62,7 @@ jobs:
           pip install --upgrade setuptools
           pip install --upgrade build
           python -m build
+          pip install -U pytest
 
       - name: Test using Pytest
         run: |
