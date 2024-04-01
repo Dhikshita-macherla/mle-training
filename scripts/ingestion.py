@@ -1,10 +1,10 @@
-#! /home/dhikshita/miniconda3/envs/mle-dev/bin/python
+
 import argparse
 import logging
 import logging.config
 import os
 
-import config_logger
+from config_logger import configure_logger
 
 from housePricePrediction import data_ingestion, data_training
 
@@ -49,6 +49,7 @@ def ingestion(output_folder, logger):
 
 def main():
     parser = argparse.ArgumentParser()
+    print("main")
     parser.add_argument("output_folder", help="Add path to output folder")
     parser.add_argument("--log-level", help="Specify log level",
                         default="INFO")
@@ -60,7 +61,7 @@ def main():
     args = parser.parse_args()
 
     console = args.console_log
-    logger = config_logger(
+    logger = configure_logger(
         log_level=(
             logging.getLevelName(args.log_level.upper())
             if args.log_level
@@ -72,5 +73,5 @@ def main():
     ingestion(args.output_folder, logger)
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     main()

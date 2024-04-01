@@ -3,8 +3,8 @@ import logging
 import os
 import pickle
 
-import config_logger
 import pandas as pd
+from config_logger import configure_logger
 
 from housePricePrediction import scoring_logic
 
@@ -48,7 +48,7 @@ def main():
     args = parser.parse_args()
 
     console = args.console_log
-    logger = config_logger(
+    logger = configure_logger(
         log_level=(
             logging.getLevelName(args.log_level.upper())
             if args.log_level
@@ -60,5 +60,5 @@ def main():
     scoring(args.data, args.pred, args.op_file, logger)
 
 
-if __name__ == 'main':
+if __name__ == '__main__':
     main()

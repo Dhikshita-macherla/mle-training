@@ -3,8 +3,9 @@ import logging.config
 
 
 def configure_logger(
-        logger=None, cfg=None, log_file=None, console=True, log_level="DEBUG"):
-    logger = logging.getLogger(__name__)
+        logger=None, cfg=None, log_file=None, console=True,
+        log_level=logging.DEBUG):
+    logger = logging.getLogger()
     LOGGING_DEFAULT_CONFIG = {
         "version": 1,
         "disable_existing_loggers": False,
@@ -23,20 +24,26 @@ def configure_logger(
     else:
         logging.config.dictConfig(cfg)
 
-    logger = logger or logging.getLogger()
-
     if log_file or console:
         for hdlr in logger.handlers:
             logger.removeHandler(hdlr)
 
         if log_file:
             fh = logging.FileHandler(log_file)
-            fh.setLevel(getattr(logging, log_level))
+            fh.setLevel(log_level)
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s -%(message)s"
+            )
+            fh.setFormatter(formatter)
             logger.addHandler(fh)
 
         if console:
             sh = logging.StreamHandler()
-            sh.setLevel(getattr(logging, log_level))
+            sh.setLevel(log_level)
+            formatter = logging.Formatter(
+                "%(asctime)s - %(name)s - %(levelname)s -%(message)s"
+            )
+            sh.setFormatter(formatter)
             logger.addHandler(sh)
 
     return logger
