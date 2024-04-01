@@ -32,9 +32,11 @@ jobs:
 
       - name: Build docs using sphinx
         run: |
-          mkdir -p docs
-          sphinx-apidoc -o docs ../src/housePricePrediction/
+          pip install sphinx sphinx_rtd_theme
+          mkdir -p docs/
           cd docs
+          sphinx-quickstart --quiet --sep -p housingPricePrediction -a Dhikshita -v 0.0.1 --ext-autodoc
+          sphinx-apidoc -o docs src/housePricePrediction/
           make html
 
       - name: Tree after build
