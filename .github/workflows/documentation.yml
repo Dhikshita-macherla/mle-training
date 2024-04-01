@@ -33,7 +33,7 @@ jobs:
       - name: Build docs using sphinx
         run: |
           pip install sphinx sphinx_rtd_theme
-          mkdir -p docs/
+          mkdir docs/
           cd docs
           sphinx-quickstart --quiet --sep -p housingPricePrediction -a Dhikshita -v 0.0.1 --ext-autodoc
           sphinx-apidoc -o docs src/housePricePrediction/
