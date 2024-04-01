@@ -4,9 +4,6 @@ on:
   pull_request:
     branches:
       - main
-  push:
-    branches:
-      - enh/17/workflow-scripts
 
 jobs:
   unittest_python_code:
@@ -79,7 +76,7 @@ jobs:
           path: dist/
 
   deploy_job:
-    needs: Building_job
+    needs: [unittest_python_code, Building_job]
     runs-on: ubuntu-latest
     defaults:
       run:
