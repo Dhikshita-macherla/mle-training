@@ -37,7 +37,7 @@ jobs:
 
       - name: Test using Pytest
         run: |
-          pytest -v
+          pytest -v tests/unit_tests/
   Building_job:
     runs-on: ubuntu-latest
     defaults:
@@ -67,7 +67,7 @@ jobs:
 
       - name: Test using Pytest
         run: |
-          pytest tests/functional_tests/
+          pytest -v tests/functional_tests/
 
       - name: Upload artifact
         uses: actions/upload-artifact@v4
