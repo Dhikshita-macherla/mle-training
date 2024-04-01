@@ -36,7 +36,7 @@ jobs:
       - name: Build docs using sphinx
         run: |
           cd docs
-          sphinx-apidoc -o docs src/housePricePrediction/
+          sphinx-apidoc -o docs ../src/housePricePrediction/
           make html
           cd ..
 
