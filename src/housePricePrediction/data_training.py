@@ -21,13 +21,11 @@ def stratified_Shuffle_Split(housing):
     train_set, test_set = train_test_split(housing,
                                            test_size=0.2,
                                            random_state=42)
-    logger.info("train_test_split for train and test set done succesfully")
     logger.info("Stratified Shuffle Split Started")
     split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
     for train_index, test_index in split.split(housing, housing["income_cat"]):
         strat_train_set = housing.loc[train_index]
         strat_test_set = housing.loc[test_index]
-    logger.info("Stratified Shuffle Split done successfully")
     return train_set, test_set, strat_train_set, strat_test_set
 
 
@@ -84,6 +82,4 @@ def cross_validation(model, X, y):
     sorted(zip(feature_importances, X.columns), reverse=True)
     final_model = search.best_estimator_
     logger.info("Best model is found successfully")
-    logger.info("Cross validation using ", model, "Started")
-    return final_model
     return final_model

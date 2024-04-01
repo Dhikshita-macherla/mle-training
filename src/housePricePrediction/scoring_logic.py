@@ -14,4 +14,3 @@ def scoring_logic(y, pred):
     mae = mean_absolute_error(y, pred)
     logger.info("Calculated the mean_squared_error and mean_absolute_error")
     return rmse, mae
-    return rmse, mae
