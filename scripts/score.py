@@ -25,7 +25,7 @@ def scoring(data_folder, pred_folder, op_folder, logger):
                 final_rmse_test, final_mae_test = scoring_logic.scoring_logic(
                     y, final_predictions_test
                 )
-                # print(final_rmse_test)
+                print("Scores calculated for ", file)
                 with open(op_folder + '/' + file + "_score.txt", 'w') as f:
                     f.write("RMSE : {}\n".format(final_rmse_test))
                     f.write("MAE : {}".format(final_mae_test))
