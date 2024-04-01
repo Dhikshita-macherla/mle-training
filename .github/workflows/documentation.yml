@@ -32,7 +32,7 @@ jobs:
 
       - name: Build docs using sphinx
         run: |
-          mkdir docs
+          mkdir -p docs
           sphinx-apidoc -o docs ../src/housePricePrediction/
           cd docs
           make html
