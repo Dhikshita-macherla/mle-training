@@ -1,15 +1,20 @@
 import argparse
+import logging
 import os
 import pickle
 
+import config_logger
 import pandas as pd
 
 from housePricePrediction import scoring_logic
 
+logger = logging.getLogger(__name__)
 
-def scoring(data_folder, pred_folder, op_folder):
+
+def scoring(data_folder, pred_folder, op_folder, logger):
     X = pd.read_csv(data_folder + '/X_test.csv')
     y = pd.read_csv(data_folder + '/y_test.csv')
+    logger.info("Test datas extracted successfully")
     os.makedirs(op_folder, exist_ok=True)
     files = os.listdir(pred_folder)
     for file in files:
@@ -20,17 +25,40 @@ def scoring(data_folder, pred_folder, op_folder):
                 final_rmse_test, final_mae_test = scoring_logic.scoring_logic(
                     y, final_predictions_test
                 )
-                print(final_rmse_test)
+                # print(final_rmse_test)
                 with open(op_folder + '/' + file + "_score.txt", 'w') as f:
                     f.write("RMSE : {}\n".format(final_rmse_test))
                     f.write("MAE : {}".format(final_mae_test))
-    print("Scores saved Successfully")
+    logger.info("Scores saved Successfully as txt files")
 
 
-parser = argparse.ArgumentParser()
-parser.add_argument("data", help="Add path to ip folder(datasets)")
-parser.add_argument("pred",
-                    help="Add path to trained models folder(pickle files)")
-parser.add_argument("op_file", help="Add path to op folder")
-args = parser.parse_args()
-scoring(args.data, args.pred, args.op_file)
+def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("data", help="Add path to ip folder(datasets)")
+    parser.add_argument("pred",
+                        help="Add path to trained models folder(pickle files)")
+    parser.add_argument("op_file", help="Add path to op folder")
+    parser.add_argument("--log-level", help="Specify log level",
+                        default="INFO")
+    parser.add_argument("--log-path", help="Path to write logs to file")
+    parser.add_argument("--no-console-log",
+                        action="store_false",
+                        dest="console_log",
+                        help="Disable writing logs to console",)
+    args = parser.parse_args()
+
+    console = args.console_log
+    logger = config_logger(
+        log_level=(
+            logging.getLevelName(args.log_level.upper())
+            if args.log_level
+            else logging.DEBUG
+        ),
+        console=(console),
+        log_file=args.log_path,
+    )
+    scoring(args.data, args.pred, args.op_file, logger)
+
+
+if __name__ == 'main':
+    main()

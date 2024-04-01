@@ -1,24 +1,23 @@
 import logging
 import logging.config
 
-from logging_tree import printout
-
-LOGGING_DEFAULT_CONFIG = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "default": {
-            "format": "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s",
-            "datefmt": "%Y-%m-%d %H:%M:%S",
-        },
-        "simple": {"format": "%(message)s"},
-    },
-    "root": {"level": "DEBUG"},
-}
-
 
 def configure_logger(
         logger=None, cfg=None, log_file=None, console=True, log_level="DEBUG"):
+    logger = logging.getLogger(__name__)
+    LOGGING_DEFAULT_CONFIG = {
+        "version": 1,
+        "disable_existing_loggers": False,
+        "formatters": {
+            "default": {
+                "format": "%(asctime)s - %(name)s - %(levelname)s - %(funcName)s:%(lineno)d - %(message)s",
+                "datefmt": "%Y-%m-%d %H:%M:%S",
+            },
+            "simple": {"format": "%(message)s"},
+        },
+        "root": {"level": "DEBUG"},
+    }
+
     if not cfg:
         logging.config.dictConfig(LOGGING_DEFAULT_CONFIG)
     else:
@@ -40,5 +39,4 @@ def configure_logger(
             sh.setLevel(getattr(logging, log_level))
             logger.addHandler(sh)
 
-    return logger
     return logger
