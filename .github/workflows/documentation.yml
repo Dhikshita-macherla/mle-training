@@ -32,7 +32,9 @@ jobs:
 
       - name: Build docs using sphinx
         run: |
+          pip install sphinx sphinx_rtd_theme
           sphinx-apidoc -o docs src/housePricePrediction/
+          cd docs
           make html
 
       - name: Tree after build
