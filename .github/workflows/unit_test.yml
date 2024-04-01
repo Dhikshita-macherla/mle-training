@@ -3,7 +3,7 @@ name: testing-python code (unit test)
 on:
   pull_request:
     branches:
-      - main
+      - branch_name
 
 jobs:
   unittest_python_code:
