@@ -17,21 +17,24 @@ def training(ip_path, op_path, logger):
     housing_y = pd.read_csv(ip_path+'/y_train.csv').values.ravel()
     logger.info("Processed train data extracted successfully")
     os.makedirs(op_path, exist_ok=True)
-    logger.info("Training the model")
+    logger.info("Training the model with linear regression")
     _, lin_model = data_training.train_data_regression("lin", housing_X,
                                                        housing_y)
     with open(op_path + "/linReg_model.pkl", 'wb') as f:
         pickle.dump(lin_model, f)
+    logger.info("Training the model with decision tree")
     _, dtree_model = data_training.train_data_regression("tree", housing_X,
                                                          housing_y)
     with open(op_path+"/deciTree_model.pkl", 'wb') as f:
         pickle.dump(dtree_model, f)
+    logger.info("Randomized Search CV started")
     final_model_rand = data_training.cross_validation('RandomizedSearchCV',
                                                       housing_X,
                                                       housing_y)
     with open(op_path + "/randCV_model.pkl", 'wb') as f:
         pickle.dump(final_model_rand, f)
     # print("Best Estimator for RandomizedSearchCV: ", final_model_rand)
+    logger.info("Grid search CV started")
     final_model_grid = data_training.cross_validation('GridSearchCV',
                                                       housing_X,
                                                       housing_y)
