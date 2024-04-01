@@ -32,7 +32,7 @@ def stratified_Shuffle_Split(housing):
 
 
 def train_data_regression(model, X, y):
-    logger.info(model, " Regression Started")
+    logger.info("Regression Started")
     if model == "lin":
         reg = LinearRegression()
     elif model == "tree":
@@ -44,7 +44,7 @@ def train_data_regression(model, X, y):
 
 
 def cross_validation(model, X, y):
-    logger.info("Cross validation using ", model, "Started")
+    logger.info("Cross validation Started")
     forest_reg = RandomForestRegressor(random_state=42)
     param_grid = [
         # try 12 (3×4) combinations of hyperparameters
