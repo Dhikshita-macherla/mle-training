@@ -33,13 +33,12 @@ jobs:
       - name: Install Package in dev mode
         run: |
           pip install -e .
-          pip install sphinx sphinx_rtd_theme
-
       - name: Build docs using sphinx
         run: |
-          sphinx-apidoc -o docs src/housePricePrediction/
           cd docs
+          sphinx-apidoc -o docs src/housePricePrediction/
           make html
+          cd ..
 
       - name: Tree after build
         run: |
