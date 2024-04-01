@@ -7,7 +7,7 @@ housing = data_ingestion.load_housing_data()
 
 # train-test split
 train_set, test_set, strat_train_set, strat_test_set = (
-    data_training.stratifiedShuffleSplit(housing)
+    data_training.stratified_Shuffle_Split(housing)
 )
 
 # preprocessing
@@ -30,7 +30,8 @@ housing_train, housing_y_train, housing_X_train = data_ingestion.imputing_data(
     strat_train_set
 )
 housing_X_train = data_ingestion.feature_extraction(housing_X_train)
-housing_X_train = data_ingestion.creating_dummies(housing_train, housing_X_train)
+housing_X_train = data_ingestion.creating_dummies(housing_train,
+                                                  housing_X_train)
 # Feature Extraction for test set
 housing_test, housing_y_test, housing_X_test = data_ingestion.imputing_data(
     strat_test_set
@@ -39,7 +40,7 @@ housing_X_test = data_ingestion.feature_extraction(housing_X_test)
 housing_X_test = data_ingestion.creating_dummies(housing_test, housing_X_test)
 
 # train model for training set
-housing_predictions_lin = data_training.train_data_regression(
+housing_predictions_lin, lin_model = data_training.train_data_regression(
     "lin", housing_X_train, housing_y_train
 )
 
@@ -48,7 +49,7 @@ lin_rmse_train, lin_mae_train = scoring_logic.scoring_logic(
     housing_y_train, housing_predictions_lin
 )
 
-housing_predictions_reg = data_training.train_data_regression(
+housing_predictions_reg, dtree_model = data_training.train_data_regression(
     "tree", housing_X_train, housing_y_train
 )
 tree_rmse_train, tree_mae_train = scoring_logic.scoring_logic(
