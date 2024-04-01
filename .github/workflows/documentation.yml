@@ -30,9 +30,13 @@ jobs:
         run: |
           tree
 
+      - name: Install Package in dev mode
+        run: |
+          pip install -e .
+          pip install sphinx sphinx_rtd_theme
+
       - name: Build docs using sphinx
         run: |
-          pip install sphinx sphinx_rtd_theme
           sphinx-apidoc -o docs src/housePricePrediction/
           cd docs
           make html
