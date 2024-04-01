@@ -21,7 +21,6 @@ def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
     urllib.request.urlretrieve(housing_url, tgz_path)
     housing_tgz = tarfile.open(tgz_path)
     housing_tgz.extractall(path=housing_path)
-    logger.info("Data Extracted Successfully")
     housing_tgz.close()
 
 
@@ -34,7 +33,7 @@ def load_housing_data(housing_path=HOUSING_PATH):
         bins=[0.0, 1.5, 3.0, 4.5, 6.0, np.inf],
         labels=[1, 2, 3, 4, 5],
     )
-    logger.info("Data extracted successfully and saved in data directory")
+    logger.info("Data extracted and saved in data directory")
     return housing
 
 
@@ -60,7 +59,6 @@ def preprocessing(housing, X_strat, y_strat, y):
     )
     for set_ in (X_strat, y_strat):
         set_.drop("income_cat", axis=1, inplace=True)
-    logger.info("Preprocessing done sucessfully")
     return compare_props
 
 

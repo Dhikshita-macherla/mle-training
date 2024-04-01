@@ -28,14 +28,15 @@ def ingestion(output_folder, logger):
     )
     logger.info("train- test split done succesfully")
     # preprocessing
+    logger.info("Preprocessing for train data")
     housing, y_train, X_train = data_ingestion.imputing_data(train)
     X_train = data_ingestion.feature_extraction(X_train)
     X_train = data_ingestion.creating_dummies(train, X_train)
 
+    logger.info("Preprocessing for test data")
     housing, y_test, X_test = data_ingestion.imputing_data(test)
     X_test = data_ingestion.feature_extraction(X_test)
     X_test = data_ingestion.creating_dummies(housing, X_test)
-    logger.info("Preprocessing done Successfully")
 
     # saving op
     processed_data_path = output_folder + '/processed'
@@ -44,12 +45,11 @@ def ingestion(output_folder, logger):
     y_train = y_train.to_csv(processed_data_path + '/y_train.csv', index=False)
     X_test = X_test.to_csv(processed_data_path+'/X_test.csv', index=False)
     y_test = y_test.to_csv(processed_data_path+'/y_test.csv', index=False)
-    logger.info("Train Test dataset split Successfully")
+    logger.info("Train Test dataset saved Successfully")
 
 
 def main():
     parser = argparse.ArgumentParser()
-    print("main")
     parser.add_argument("output_folder", help="Add path to output folder")
     parser.add_argument("--log-level", help="Specify log level",
                         default="INFO")
