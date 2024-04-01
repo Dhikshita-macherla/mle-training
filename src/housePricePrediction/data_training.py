@@ -1,3 +1,6 @@
+import logging
+import logging.config
+
 import numpy as np
 from scipy.stats import randint
 from sklearn.ensemble import RandomForestRegressor
@@ -10,12 +13,15 @@ from sklearn.model_selection import (
 )
 from sklearn.tree import DecisionTreeRegressor
 
+logger = logging.getLogger(__name__)
+
 
 def stratified_Shuffle_Split(housing):
+    logger.info("train_test_split Started")
     train_set, test_set = train_test_split(housing,
                                            test_size=0.2,
                                            random_state=42)
-
+    logger.info("Stratified Shuffle Split Started")
     split = StratifiedShuffleSplit(n_splits=1, test_size=0.2, random_state=42)
     for train_index, test_index in split.split(housing, housing["income_cat"]):
         strat_train_set = housing.loc[train_index]
@@ -24,16 +30,19 @@ def stratified_Shuffle_Split(housing):
 
 
 def train_data_regression(model, X, y):
+    logger.info("Regression Started")
     if model == "lin":
         reg = LinearRegression()
     elif model == "tree":
         reg = DecisionTreeRegressor()
     reg.fit(X, y)
     pred = reg.predict(X)
+    logger.info("model is fitted and y values for X is predicted successfully")
     return pred, reg
 
 
 def cross_validation(model, X, y):
+    logger.info("Cross validation Started")
     forest_reg = RandomForestRegressor(random_state=42)
     param_grid = [
         # try 12 (3×4) combinations of hyperparameters
@@ -64,6 +73,7 @@ def cross_validation(model, X, y):
             return_train_score=True,
         )
     search.fit(X, y)
+    logger.info("Model fitted successfully")
     cvres = search.cv_results_
     for mean_score, params in zip(cvres["mean_test_score"], cvres["params"]):
         print(np.sqrt(-mean_score), params)
@@ -71,4 +81,5 @@ def cross_validation(model, X, y):
     feature_importances = search.best_estimator_.feature_importances_
     sorted(zip(feature_importances, X.columns), reverse=True)
     final_model = search.best_estimator_
+    logger.info("Best model is found successfully")
     return final_model

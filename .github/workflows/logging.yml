@@ -3,7 +3,7 @@ name: Workflow_scripts
 on:
   pull_request:
     branches:
-      - branch_name
+      - main
 
 jobs:
   unittest_python_code:
