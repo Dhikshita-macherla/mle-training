@@ -1,5 +1,6 @@
 #! /home/dhikshita/miniconda3/envs/mle-dev/bin/python
 import argparse
+import logging
 import os
 
 from housePricePrediction import data_ingestion, data_training
@@ -48,5 +49,6 @@ args = parser.parse_args()
 ingestion(args.output_folder)
 
 # if __name__ == 'main':
+#    main()
 #    main()
 #    main()
