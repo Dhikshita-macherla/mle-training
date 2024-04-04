@@ -3,7 +3,7 @@ name: documentation
 on:
   pull_request:
     branches:
-      - main
+      - branch_name
 
 jobs:
   docs_build_job:
