@@ -6,7 +6,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from six.moves import urllib
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 logger = logging.getLogger(__name__)
 DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
@@ -133,7 +137,7 @@ def preprocessing(housing, X_strat, y_strat, y):
     return compare_props
 
 
-def data_visualization(data):
+def data_visualization(housing):
     """data_visualization function
     Displays the scatter plot for DataFrame and
     prints the correlation matrix for the same.
@@ -145,11 +149,11 @@ def data_visualization(data):
 
     """
     logger.info("Data visualization started")
-    data.plot(kind="scatter", x="longitude", y="latitude")
-    data.plot(kind="scatter", x="longitude", y="latitude", alpha=0.1)
+    housing.plot(kind="scatter", x="longitude", y="latitude")
+    housing.plot(kind="scatter", x="longitude", y="latitude", alpha=0.1)
     plt.show()
     logger.info("Plots are displayed successfully")
-    corr_matrix = data.corr(numeric_only=True)
+    corr_matrix = housing.corr(numeric_only=True)
     corr_matrix["median_house_value"].sort_values(ascending=False)
     print(corr_matrix)
     logger.info("Correlation matrix is printed successfully")
@@ -241,3 +245,38 @@ def creating_dummies(housing, X_prepared):
     X_prepared = X_prepared.join(pd.get_dummies(X_cat, drop_first=True))
     logger.info("Dummies creation for all categorical data done successfully")
     return X_prepared
+
+
+rooms_ix, bedrooms_ix, population_ix, households_ix = 3, 4, 5, 6
+
+
+class FeatureExtraction(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+
+    def transform(self, X):
+        rooms_per_household = X[:, rooms_ix] / X[:, households_ix]
+        population_per_household = X[:, population_ix] / X[:, households_ix]
+        bedrooms_per_room = X[:, bedrooms_ix] / X[:, rooms_ix]
+        return np.c_[
+            X, rooms_per_household, population_per_household, bedrooms_per_room
+        ]
+
+
+def pipelinesIngestion(housing):
+    housing = housing.drop("median_house_value", axis=1)
+    X_num = housing.drop("ocean_proximity", axis=1)
+    num_attribs = list(X_num)
+    cat_attribs = ["ocean_proximity"]
+
+    full_pipeline_new = ColumnTransformer([
+            ("num", Pipeline([
+                ('imputer', SimpleImputer(strategy="median")),
+                ('attribs_adder', FeatureExtraction()),
+                ('std_scaler', StandardScaler()),]), num_attribs),
+            ("cat", OneHotEncoder(handle_unknown='ignore'), cat_attribs),
+        ])
+    return full_pipeline_new
