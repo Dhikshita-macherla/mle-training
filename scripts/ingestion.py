@@ -4,6 +4,7 @@ import logging
 import logging.config
 import os
 
+import pandas as pd
 from config_logger import configure_logger
 
 from housePricePrediction import data_ingestion, data_training
@@ -28,23 +29,33 @@ def ingestion(output_folder, logger):
     )
     logger.info("train- test split done succesfully")
     # preprocessing
+
+    y_train = train["median_house_value"].copy()
+    X_test = test.drop("median_house_value", axis=1)
+    y_test = test["median_house_value"].copy()
+
     logger.info("Preprocessing for train data")
-    housing, y_train, X_train = data_ingestion.imputing_data(train)
-    X_train = data_ingestion.feature_extraction(X_train)
-    X_train = data_ingestion.creating_dummies(train, X_train)
+    full_pipeline = data_ingestion.pipelinesIngestion(housing)
+    X_train = full_pipeline.fit_transform(train)
 
     logger.info("Preprocessing for test data")
-    housing, y_test, X_test = data_ingestion.imputing_data(test)
-    X_test = data_ingestion.feature_extraction(X_test)
-    X_test = data_ingestion.creating_dummies(housing, X_test)
+    X_test = full_pipeline.transform(test)
 
     # saving op
     processed_data_path = output_folder + '/processed'
     os.makedirs(processed_data_path, exist_ok=True)
-    X_train = X_train.to_csv(processed_data_path + '/X_train.csv', index=False)
-    y_train = y_train.to_csv(processed_data_path + '/y_train.csv', index=False)
-    X_test = X_test.to_csv(processed_data_path+'/X_test.csv', index=False)
-    y_test = y_test.to_csv(processed_data_path+'/y_test.csv', index=False)
+    X_train = pd.DataFrame(X_train).to_csv(processed_data_path +
+                                           '/X_train.csv',
+                                           index=False)
+    y_train = pd.DataFrame(y_train).to_csv(processed_data_path +
+                                           '/y_train.csv',
+                                           index=False)
+    X_test = pd.DataFrame(X_test).to_csv(processed_data_path +
+                                         '/X_test.csv',
+                                         index=False)
+    y_test = pd.DataFrame(y_test).to_csv(processed_data_path +
+                                         '/y_test.csv',
+                                         index=False)
     logger.info("Train Test dataset saved Successfully")
 
 

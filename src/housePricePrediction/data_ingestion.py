@@ -6,7 +6,11 @@ import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 from six.moves import urllib
+from sklearn.base import BaseEstimator, TransformerMixin
+from sklearn.compose import ColumnTransformer
 from sklearn.impute import SimpleImputer
+from sklearn.pipeline import Pipeline
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
 
 logger = logging.getLogger(__name__)
 DOWNLOAD_ROOT = "https://raw.githubusercontent.com/ageron/handson-ml/master/"
@@ -15,23 +19,6 @@ HOUSING_URL = DOWNLOAD_ROOT + "datasets/housing/housing.tgz"
 
 
 def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
-    """fetch_housing_data function
-    Fetches the data from the given URL and extracts it.
-
-    Parameters
-    ----------
-    housing_url : str
-        The URL for the dataset.
-        By default it takes HOUSING_URL
-    housing_path : str
-        Path to the directory containing housing data.
-        By default it takes HOUSING_PATH
-
-    Raises
-    -------
-        FileNotFoundError: If the specified file is not found.
-
-    """
     os.makedirs(housing_path, exist_ok=True)
     logger.info("Fetching data started")
     tgz_path = os.path.join(housing_path, "housing.tgz")
@@ -42,24 +29,6 @@ def fetch_housing_data(housing_url=HOUSING_URL, housing_path=HOUSING_PATH):
 
 
 def load_housing_data(housing_path=HOUSING_PATH):
-    """load_housing_data function
-    Loads the data from the csv file of the given path and process it.
-
-    Parameters
-    ----------
-    housing_path : str
-        Path to the directory containing housing data.
-
-    Returns
-    -------
-    housing: DataFrame containing the loaded housing data
-    with additional columns.
-
-    Raises
-    ------
-        FileNotFoundError: If the specified housing file is not found.
-
-    """
     csv_path = os.path.join(housing_path, "housing.csv")
     logger.info("Data loading started")
     housing = pd.read_csv(csv_path)
@@ -73,46 +42,10 @@ def load_housing_data(housing_path=HOUSING_PATH):
 
 
 def income_cat_proportions(data):
-    """income_cat_proportions function
-    To calculate the proportion of each income category of the dataset
-
-    Parameters
-    ----------
-    data : DataFrame
-        DataFrame containing the income_cat(category) column
-
-    Returns
-    -------
-    proportions : Series
-        Series of proportions containing the proportions
-        of each income category
-
-    """
     return data["income_cat"].value_counts() / len(data)
 
 
 def preprocessing(housing, X_strat, y_strat, y):
-    """preprocessing function
-    Perform preprocessing steps on the housing data and
-    stratified train and test set
-
-    Parameters
-    ----------
-    housing : DataFrame
-        Original housing dataset
-    X_strat : DataFrame
-        The stratified train set
-    y_strat : DataFrame
-        The stratified test set
-    y :  DataFrame
-        Original test set
-
-    Returns
-    -------
-    compare_props : DataFrame
-        DataFrame containing comparison of income category proportions
-
-    """
     logger.info("Preprocessing started")
     compare_props = pd.DataFrame(
         {
@@ -133,43 +66,20 @@ def preprocessing(housing, X_strat, y_strat, y):
     return compare_props
 
 
-def data_visualization(data):
-    """data_visualization function
-    Displays the scatter plot for DataFrame and
-    prints the correlation matrix for the same.
-
-    Parameters
-    ----------
-    data : DataFrame
-        DataFrame that you want to visualize
-
-    """
+def data_visualization(housing):
     logger.info("Data visualization started")
-    data.plot(kind="scatter", x="longitude", y="latitude")
-    data.plot(kind="scatter", x="longitude", y="latitude", alpha=0.1)
+    housing.plot(kind="scatter", x="longitude", y="latitude")
+    housing.plot(kind="scatter", x="longitude", y="latitude", alpha=0.1)
     plt.show()
     logger.info("Plots are displayed successfully")
-    corr_matrix = data.corr(numeric_only=True)
+    corr_matrix = housing.corr(numeric_only=True)
     corr_matrix["median_house_value"].sort_values(ascending=False)
     print(corr_matrix)
     logger.info("Correlation matrix is printed successfully")
 
 
+'''
 def feature_extraction(housing):
-    """feature_extraction function
-    Performs feature extraction(adds new features) on the housing data
-
-    Parameters
-    ----------
-    housing : DataFrame
-        DataFrame that needed to be explored
-
-    Returns
-    -------
-    housing : DataFrame
-        Processed DataFrame after addition of new features
-
-    """
     logger.info("Feature Extraction started")
     housing["rooms_per_household"] = \
         housing["total_rooms"] / housing["households"]
@@ -182,26 +92,6 @@ def feature_extraction(housing):
 
 
 def imputing_data(X_train):
-    """imputing_data function
-    Performs imputation on the train data
-    i.e., fills the missing values with median value.
-
-    Parameters
-    ----------
-    X_train : DataFrame
-        Train data
-
-    Returns
-    -------
-    housing : DataFrame
-        DataFrame without median_house_value column
-    y : DataFrame
-        DataFrame with only median_house_value column
-    X_prepared : DataFrame
-        Transformed imputed dataFrame without median_house_value and
-        ocean_proximity columns.
-
-    """
     logger.info("Data imputation started")
     housing = X_train.drop("median_house_value", axis=1)
     y = X_train["median_house_value"].copy()
@@ -217,27 +107,43 @@ def imputing_data(X_train):
 
 
 def creating_dummies(housing, X_prepared):
-    """creating_dummies function
-    Created dummies for all the categorical data in the DataFrame
-
-    Parameters
-    ----------
-    housing : DataFrame
-        DataFrame without median_house_value column
-
-    X_prepared : DataFrame
-        Transformed imputed dataFrame without median_house_value column
-
-
-    Returns
-    -------
-    X_prepared : DataFrame
-        DataFrame after the creation of dummies for ocean_proximity column
-
-    """
     logger.info("Preprocessing- creating dummies started")
     X_cat = housing[["ocean_proximity"]]
 
     X_prepared = X_prepared.join(pd.get_dummies(X_cat, drop_first=True))
     logger.info("Dummies creation for all categorical data done successfully")
     return X_prepared
+'''
+
+rooms_ix, bedrooms_ix, population_ix, households_ix = 3, 4, 5, 6
+
+class FeatureExtraction(BaseEstimator, TransformerMixin):
+    def __init__(self):
+        pass
+
+    def fit(self, X, y=None):
+        return self  # nothing else to do
+
+    def transform(self, X):
+        rooms_per_household = X[:, rooms_ix] / X[:, households_ix]
+        population_per_household = X[:, population_ix] / X[:, households_ix]
+        bedrooms_per_room = X[:, bedrooms_ix] / X[:, rooms_ix]
+        return np.c_[
+            X, rooms_per_household, population_per_household, bedrooms_per_room
+        ]
+
+
+def pipelinesIngestion(housing):
+    housing = housing.drop("median_house_value", axis=1)
+    X_num = housing.drop("ocean_proximity", axis=1)
+    num_attribs = list(X_num)
+    cat_attribs = ["ocean_proximity"]
+
+    full_pipeline_new = ColumnTransformer([
+            ("num", Pipeline([
+                ('imputer', SimpleImputer(strategy="median")),
+                ('attribs_adder', FeatureExtraction()),
+                ('std_scaler', StandardScaler()),]), num_attribs),
+            ("cat", OneHotEncoder(handle_unknown='ignore'), cat_attribs),
+        ])
+    return full_pipeline_new
