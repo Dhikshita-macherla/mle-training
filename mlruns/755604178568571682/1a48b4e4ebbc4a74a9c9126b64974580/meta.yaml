@@ -1,0 +1,15 @@
+artifact_uri: /home/dhikshita/my-project/mle-training/mlruns/755604178568571682/1a48b4e4ebbc4a74a9c9126b64974580/artifacts
+end_time: 1712735979950
+entry_point_name: ''
+experiment_id: '755604178568571682'
+lifecycle_stage: active
+run_id: 1a48b4e4ebbc4a74a9c9126b64974580
+run_name: Main_Run
+run_uuid: 1a48b4e4ebbc4a74a9c9126b64974580
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1712735780002
+status: 3
+tags: []
+user_id: dhikshita
