@@ -1,14 +1,16 @@
-import argparse
-import logging
+# import argparse
+# import logging
 import os
 import pickle
 
+import mlflow
 import pandas as pd
-from config_logger import configure_logger
 
 from housePricePrediction import scoring_logic
 
-logger = logging.getLogger(__name__)
+# from config_logger import configure_logger
+
+# logger = logging.getLogger(__name__)
 
 
 def scoring(data_folder, pred_folder, op_folder, logger):
@@ -22,17 +24,20 @@ def scoring(data_folder, pred_folder, op_folder, logger):
             with open(os.path.join(pred_folder + '/' + file), 'rb') as f:
                 pred_model = pickle.load(f)
                 final_predictions_test = pred_model.predict(X)
-                final_rmse_test, final_mae_test = scoring_logic.scoring_logic(
-                    y, final_predictions_test
-                )
+                final_rmse_test, final_mae_test = \
+                    scoring_logic.scoring_logic(y, final_predictions_test)
                 print("Scores calculated for ", file)
                 with open(op_folder + '/' + file + "_score.txt", 'w') as f:
                     f.write("RMSE : {}\n".format(final_rmse_test))
                     f.write("MAE : {}".format(final_mae_test))
+
+                mlflow.log_metric(key="rmse", value=final_rmse_test)
+                mlflow.log_metrics({"mae": final_mae_test})
+                mlflow.log_artifact(op_folder + '/' + file + "_score.txt")
     logger.info("Scores saved Successfully as txt files")
 
 
-def main():
+'''def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("data", help="Add path to ip folder(datasets)")
     parser.add_argument("pred",
@@ -61,4 +66,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main()'''
