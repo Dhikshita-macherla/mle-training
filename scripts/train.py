@@ -47,7 +47,7 @@ def training(ip_path, op_path, logger):
                                                       housing_y)
     with open(op_path+"/gsCV_model.pkl", 'wb') as f:
         pickle.dump(final_model_grid, f)
-        # mlflow.sklearn.log_model(final_model_grid, "final_model_grid")
+        mlflow.sklearn.log_model(final_model_grid, "final_model_grid")
 
     # print("Best Estimator for GridSearchCV: ", final_model_grid)
     logger.info("Training done Successflly \
