@@ -1,51 +1,68 @@
-import argparse
-import logging
-import logging.config
+# import argparse
+# import logging
+# import logging.config
 import os
 import pickle
 
+import mlflow
 import pandas as pd
-from config_logger import configure_logger
 
 from housePricePrediction import data_training
 
-logger = logging.getLogger(__name__)
+# from config_logger import configure_logger
+# logger = logging.getLogger(__name__)
 
 
 def training(ip_path, op_path, logger):
     housing_X = pd.read_csv(ip_path+'/X_train.csv')
     housing_y = pd.read_csv(ip_path+'/y_train.csv').values.ravel()
-    logger.info("Processed train data extracted successfully")
     os.makedirs(op_path, exist_ok=True)
+    logger.info("Processed train data extracted successfully")
     logger.info("Training the model with linear regression")
     _, lin_model = data_training.train_data_regression("lin", housing_X,
                                                        housing_y)
     with open(op_path + "/linReg_model.pkl", 'wb') as f:
         pickle.dump(lin_model, f)
+        mlflow.sklearn.log_model(lin_model, "lin_model")
+
     logger.info("Training the model with decision tree")
     _, dtree_model = data_training.train_data_regression("tree", housing_X,
                                                          housing_y)
     with open(op_path+"/deciTree_model.pkl", 'wb') as f:
         pickle.dump(dtree_model, f)
+        mlflow.sklearn.log_model(dtree_model, "dtree_model")
+
     logger.info("Randomized Search CV started")
-    final_model_rand = data_training.cross_validation('RandomizedSearchCV',
-                                                      housing_X,
-                                                      housing_y)
+    rand_model, final_model_rand = data_training.cross_validation(
+        'RandomizedSearchCV',
+        housing_X,
+        housing_y)
+    rand_param = rand_model.best_params_
+    mlflow.log_param("rand_param", rand_param)
+    # mlflow.log_metric("score", rand_model.score(housing_X, housing_y))
     with open(op_path + "/randCV_model.pkl", 'wb') as f:
         pickle.dump(final_model_rand, f)
+        mlflow.sklearn.log_model(final_model_rand, "final_model_rand")
+
     # print("Best Estimator for RandomizedSearchCV: ", final_model_rand)
     logger.info("Grid search CV started")
-    final_model_grid = data_training.cross_validation('GridSearchCV',
-                                                      housing_X,
-                                                      housing_y)
+    grid_model, final_model_grid = data_training.cross_validation(
+        'GridSearchCV',
+        housing_X,
+        housing_y)
+    grid_param = grid_model.best_params_
+    mlflow.log_param('grid_param', grid_param)
+
     with open(op_path+"/gsCV_model.pkl", 'wb') as f:
         pickle.dump(final_model_grid, f)
+        mlflow.sklearn.log_model(final_model_grid, "final_model_grid")
+
     # print("Best Estimator for GridSearchCV: ", final_model_grid)
     logger.info("Training done Successflly \
                 and models are stored as pickle files")
 
 
-def main():
+'''def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("ip_folder", help="Add path to ip folder(datasets)")
     parser.add_argument("op_folder",
@@ -73,4 +90,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main()'''
