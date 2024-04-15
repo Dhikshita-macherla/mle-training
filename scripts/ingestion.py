@@ -1,13 +1,14 @@
 
-import argparse
-import logging
-import logging.config
+# import argparse
+# import logging
+# import logging.config
 import os
 
 import pandas as pd
-from config_logger import configure_logger
 
 from housePricePrediction import data_ingestion, data_training
+
+# from config_logger import configure_logger
 
 
 def ingestion(output_folder, logger):
@@ -59,7 +60,7 @@ def ingestion(output_folder, logger):
     logger.info("Train Test dataset saved Successfully")
 
 
-def main():
+'''def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("output_folder", help="Add path to output folder")
     parser.add_argument("--log-level", help="Specify log level",
@@ -85,4 +86,4 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    main()'''
