@@ -25,9 +25,9 @@ $conda activate mle_dev<br>
 $python nonstandardcode.py<br>
 
 ## Package build and installation steps
-$python -m pip install --upgrade build
-$python -m build
-$pip install dist/*.whl
+$python -m pip install --upgrade build<br>
+$python -m build<br>
+$pip install dist/*.whl<br>
 
 ### Test the installation
 $pytest -v tests/functional_tests/
@@ -40,5 +40,11 @@ $python scripts/main.py data data/processed .artifacts/model .artifacts/scores
 
 ### Look for log
 $python scripts/main.py data data/processed .artifacts/model .artifacts/scores --log-path logs
+
+### Docker
+$docker build -t dhikshita/docker:v1 .<br>
+$docker -p 5008:5008 run dhikshita/docker:v1<br>
+$docker pull dhikshita/docker:v1<br>
+
 
 
