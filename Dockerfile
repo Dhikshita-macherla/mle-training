@@ -16,16 +16,12 @@ RUN apt-get update && \
 RUN pip install --upgrade setuptools && \
     pip install --upgrade build && \
     python3 -m build && \
-    pip install dist/*.whl && \
+    pip install dist/*.whl --force-reinstall && \
     pip install pandas numpy matplotlib scikit-learn pytest
 
 CMD ["sh", "-c", "\
+    mlflow server --backend-store-uri mlruns/ --default-artifact-root mlruns/ --host 0.0.0.0 --port 5009 & \
     pytest -v tests/functional_tests/ && \
     pytest -v tests/unit_tests/ && \
-    python3 scripts/ingestion.py -h && \
-    python3 scripts/ingestion.py data && \
-    python3 scripts/train.py -h && \
-    python3 scripts/train.py data/processed .artifacts/models && \
-    python3 scripts/score.py -h && \
-    python3 scripts/score.py data/processed .artifacts/models .artifacts/scores \
+    python3 scripts/main.py data data/processed .artifacts/model .artifacts/scores \
 "]
