@@ -4,6 +4,8 @@ COPY deploy/conda/env.yml .
 RUN conda env create -f env.yml
 RUN echo "source activate mle-dev" > ~/.bashrc
 ENV path /opt/conda/envs/mle-dev/bin:$PATH
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
 
 COPY . /mle-training/
 WORKDIR /mle-training/
