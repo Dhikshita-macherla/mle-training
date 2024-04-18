@@ -44,6 +44,10 @@ $python scripts/main.py data data/processed .artifacts/model .artifacts/scores -
 ### Docker
 $docker build -t dhikshita/docker:v1 .<br>
 $docker -p 5008:5008 run dhikshita/docker:v1<br>
+<br>
+<br>
+$docker login<br>
+$docker push dhikshita/docker:v1<br>
 $docker pull dhikshita/docker:v1<br>
 
 
