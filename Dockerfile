@@ -7,7 +7,8 @@ ENV path /opt/conda/envs/mle-dev/bin:$PATH
 
 COPY . /mle-training/
 WORKDIR /mle-training/
-
+ENV MLFLOW_TRACKING_URI=http://localhost:5009
+EXPOSE 5009
 
 RUN apt-get update && \
     apt-get install -y python3-pip && \
