@@ -46,4 +46,4 @@ jobs:
           file: ./Dockerfile
 
       - name: Run Docker container
-        run: docker run -p 5008:5008 dhikshita/docker:v1
+        run: docker run -p 5008:5008 dhikshita/dockerWorkflow:v1
