@@ -33,26 +33,18 @@ def training(ip_path, op_path, logger):
         mlflow.sklearn.log_model(dtree_model, "dtree_model")
 
     logger.info("Randomized Search CV started")
-    rand_model, final_model_rand = data_training.cross_validation(
-        'RandomizedSearchCV',
-        housing_X,
-        housing_y)
-    rand_param = rand_model.best_params_
-    mlflow.log_param("rand_param", rand_param)
-    # mlflow.log_metric("score", rand_model.score(housing_X, housing_y))
+    final_model_rand = data_training.cross_validation('RandomizedSearchCV',
+                                                      housing_X,
+                                                      housing_y)
     with open(op_path + "/randCV_model.pkl", 'wb') as f:
         pickle.dump(final_model_rand, f)
         mlflow.sklearn.log_model(final_model_rand, "final_model_rand")
 
     # print("Best Estimator for RandomizedSearchCV: ", final_model_rand)
     logger.info("Grid search CV started")
-    grid_model, final_model_grid = data_training.cross_validation(
-        'GridSearchCV',
-        housing_X,
-        housing_y)
-    grid_param = grid_model.best_params_
-    mlflow.log_param('grid_param', grid_param)
-
+    final_model_grid = data_training.cross_validation('GridSearchCV',
+                                                      housing_X,
+                                                      housing_y)
     with open(op_path+"/gsCV_model.pkl", 'wb') as f:
         pickle.dump(final_model_grid, f)
         mlflow.sklearn.log_model(final_model_grid, "final_model_grid")

@@ -14,7 +14,7 @@ from config_logger import configure_logger
 
 def main(dataset_folder, processed_data_folder, model_output_folder,
          score_output_folder, logger):
-    mlflow.set_tracking_uri("http://localhost:5005")
+    mlflow.set_tracking_uri("http://localhost:5008")
     # mlflow.set_tracking_uri(remote_server_uri)
     print(mlflow.tracking.get_tracking_uri())
     exp_name = "housing"
