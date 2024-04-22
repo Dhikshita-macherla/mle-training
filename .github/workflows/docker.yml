@@ -42,7 +42,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: dhikshita/docker:v1
+          tags: dhikshita/dockerWorkflow:v1
           file: ./Dockerfile
 
       - name: Run Docker container
