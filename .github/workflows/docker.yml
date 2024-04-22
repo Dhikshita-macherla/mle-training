@@ -42,8 +42,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: dhikshita/dockerWorkflow:v1
+          tags: dhikshita/docker_workflow:v1
           file: ./Dockerfile
 
       - name: Run Docker container
-        run: docker run -p 5008:5008 dhikshita/dockerWorkflow:v1
+        run: docker run -p 5008:5008 dhikshita/docker_workflow:v1
