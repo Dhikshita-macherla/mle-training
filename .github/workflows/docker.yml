@@ -42,8 +42,8 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: dhikshita/docker:v2
+          tags: dhikshita/docker:v3
           file: ./Dockerfile
 
       - name: Run Docker container
-        run: docker run -p 5008:5008 dhikshita/docker:v2
+        run: docker run -p 5008:5008 dhikshita/docker:v3
