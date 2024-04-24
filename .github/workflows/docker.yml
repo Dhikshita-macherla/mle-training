@@ -43,7 +43,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           push: true
-          tags: dhikshita/docker-optional:v4
+          tags: dhikshita/docker:v4
           file: ./deploy/docker/Dockerfile
 
       - name: Run Docker container
