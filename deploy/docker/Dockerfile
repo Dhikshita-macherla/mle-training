@@ -1,3 +1,4 @@
+#!/bin/bash
 FROM continuumio/miniconda3:latest as builder
 ARG USERNAME=mle-dhikshita
 ARG USER_UID=1000
@@ -11,7 +12,7 @@ RUN groupadd --gid $USER_GID $USERNAME \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME \
     && chmod 777 /etc/sudoers.d/$USERNAME
 RUN chown -R $USERNAME:$USER_GID /mle-training/
-COPY deploy/conda/env.yml .
+COPY ./deploy/conda/env.yml .
 RUN conda env create -f env.yml
 RUN echo "source activate mle-dev" > ~/.bashrc
 ENV PATH /opt/conda/envs/mle-dev/bin:$PATH
@@ -24,16 +25,11 @@ RUN python3 -m build && \
 
 FROM builder as builder1
 WORKDIR /mle-training/
-USER $USERNAME
-#RUN mkdir -p /mle-training/
-#RUN chown -R $USERNAME:$USER_GID /mle-training/
 ENV PATH /opt/conda/envs/mle-dev/bin:$PATH
 ENV MLFLOW_TRACKING_URI=http://localhost:5008
 EXPOSE 5008
-CMD ["sh", "-c", "\
-    mlflow server --backend-store-uri mlruns/ --default-artifact-root mlruns/ --host 0.0.0.0 --port 5008 & \
-    pytest -v tests/functional_tests/ && \
-    pytest -v tests/unit_tests/ && \
-    python3 scripts/main.py data data/processed .artifacts/model .artifacts/scores \
-"]
-
+#COPY ./deploy/docker/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod 777 ./deploy/docker/entrypoint.sh
+RUN chown $USERNAME:$USER_GID ./deploy/docker/entrypoint.sh
+USER $USERNAME
+ENTRYPOINT ["/bin/bash", "./deploy/docker/entrypoint.sh"]
