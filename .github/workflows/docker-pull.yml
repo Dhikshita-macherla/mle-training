@@ -33,12 +33,17 @@ jobs:
           password: ${{ secrets.DH_password }}
 
       - name: Pull container image to registry
-        run: docker pull dhikshita/docker:v1
+        run: docker pull dhikshita/docker:v2
       - name: Install MLflow
         run: |
           pip install mlflow
-      - name: Start MLflow UI
-        run: mlflow server --backend-store-uri mlruns/ --default-artifact-root mlruns/ --host 0.0.0.0 --port 5011 &
-      - name: Run Docker container
-        run: docker run -p 5011:5010 dhikshita/docker:v1
+      - name: Run Docker Container
+        run: docker run -p 5008:5008 -v ${{ github.workspace }}/mlruns:/mlruns dhikshita/docker:v2
+
+      - name: Display MLflow Logs
+        run: |
+          ls -la ${{ github.workspace }}/mlruns
+          cat ${{ github.workspace }}/mlruns/meta.yaml
+      - name: Experiment logs
+        run: docker logs dhikshita/docker:v2
 
