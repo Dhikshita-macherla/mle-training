@@ -36,6 +36,4 @@ jobs:
         run: docker pull dhikshita/docker:v2
       - name: Run Docker Container
         run: docker run -p 5008:5008 dhikshita/docker:v2
-      - name: Experiment logs
-        run: docker logs dhikshita/docker:v2
 
