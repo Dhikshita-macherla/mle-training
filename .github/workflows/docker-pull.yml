@@ -38,12 +38,7 @@ jobs:
         run: |
           pip install mlflow
       - name: Run Docker Container
-        run: docker run -p 5008:5008 -v ${{ github.workspace }}/mlruns:/mlruns dhikshita/docker:v2
-
-      - name: Display MLflow Logs
-        run: |
-          ls -la ${{ github.workspace }}/mlruns
-          cat ${{ github.workspace }}/mlruns/meta.yaml
+        run: docker run -p 5008:5008 dhikshita/docker:v2
       - name: Experiment logs
         run: docker logs dhikshita/docker:v2
 
