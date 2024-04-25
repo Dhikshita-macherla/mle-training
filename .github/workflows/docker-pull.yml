@@ -41,7 +41,5 @@ jobs:
         run: |
           mlflow ui --backend-store-uri mlruns/ --default-artifact-root mlruns/ --host 0.0.0.0 &
       - name: Run Docker container
-        run:
-          lsof -i :5010
-          docker run -p 5010:5010 dhikshita/docker:v1
+        run: docker run -p 5010:5010 dhikshita/docker:v1
 
