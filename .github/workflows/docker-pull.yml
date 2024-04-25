@@ -34,8 +34,17 @@ jobs:
 
       - name: Pull container image to registry
         run: docker pull dhikshita/docker:v2
-      - name: MLflow UI
-        run: mlflow ui &
+      - name: Install MLflow
+        run: |
+          pip install mlflow
+      - name: Start MLflow UI
+        run: |
+          nohup mlflow ui --host 0.0.0.0 --port 5008 &
+          sleep 5
+
+      - name: Curl MLflow UI
+        run: |
+          curl http://0.0.0.0:5008/
       - name: Run Docker container
         run: docker run -p 5008:5008 dhikshita/docker:v2
 
