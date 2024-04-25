@@ -35,7 +35,7 @@ jobs:
       - name: Pull container image to registry
         run: docker pull dhikshita/docker:v2
       - name: MLflow UI
-        run: mlflow ui
+        run: mlflow ui &
       - name: Run Docker container
         run: docker run -p 5008:5008 dhikshita/docker:v2
 
