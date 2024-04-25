@@ -4,7 +4,7 @@ name: docker
 on:
   pull_request:
     branches:
-      - main
+      - branch_name
 
 jobs:
   docker:
