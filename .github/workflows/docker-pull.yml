@@ -34,9 +34,6 @@ jobs:
 
       - name: Pull container image to registry
         run: docker pull dhikshita/docker:v2
-      - name: Install MLflow
-        run: |
-          pip install mlflow
       - name: Run Docker Container
         run: docker run -p 5008:5008 dhikshita/docker:v2
       - name: Experiment logs
