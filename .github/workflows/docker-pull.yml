@@ -34,9 +34,11 @@ jobs:
 
       - name: Pull container image to registry
         run: docker pull dhikshita/docker:v2
-      - name: Set up MLflow
-        run: |
-          pip install mlflow
-          mlflow server --backend-store-uri sqlite:///mlflow.db --default-artifact-root ./artifacts --host 0.0.0.0 --port 5008 &
       - name: Run Docker container
         run: docker run -p 5008:5008 dhikshita/docker:v2
+      - name: Log MLflow Artifacts
+        run: |
+          docker run --rm \
+          -v ${{ github.workspace }}/artifacts:/workspace/artifacts \
+          your-dockerhub-username/your-image-name:your-tag \
+          python /workspace/log_artifacts.py
