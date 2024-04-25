@@ -1,10 +1,10 @@
 
-name: docker
+name: docker-pull
 
 on:
   pull_request:
     branches:
-      - branch_name
+      - main
 
 jobs:
   docker:
@@ -15,13 +15,6 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
-
-      - name: Set up Miniconda
-        uses: conda-incubator/setup-miniconda@v2
-        with:
-          activate-environment: mle-dev
-          environment-file: deploy/conda/env.yml
-          auto-activate-base: false
 
       - name: Tree view
         run: |
@@ -39,12 +32,8 @@ jobs:
           username: ${{ secrets.DH_username }}
           password: ${{ secrets.DH_password }}
 
-      - name: Build and push container image to registry
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: dhikshita/docker:v4
-          file: ./deploy/docker/Dockerfile
+      - name: Pull container image to registry
+        run: docker pull dhikshita/docker:v2
+      - name: Run Docker Container
+        run: docker run -p 5008:5008 dhikshita/docker:v2
 
-      - name: Run Docker container
-        run: docker run -p 5008:5008 dhikshita/docker:v4
